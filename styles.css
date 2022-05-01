@@ -1,0 +1,13 @@
+
+.canvas-area{
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    align-self: center;
+}
+#canvas{
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
