@@ -26,25 +26,31 @@ imageLoader.addEventListener("change", function(e){
     reader.readAsDataURL(e.target.files[0]);
 });
 
-
 canvas.on('mouse:wheel', function(opt) {
     var delta = opt.e.deltaY;
     var zoom = canvas.getZoom();
     zoom *= 0.999 ** delta;
-    console.log(delta);
     if (zoom > 20) zoom = 20;
     if (zoom < 1) zoom = 1;
     canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-    if(zoom ===1){
-        image.set({
-            originX: 'center',
-            originY: 'center',
-        });
-        canvas.centerObject(image);
-        canvas.renderAll();
-    }
     opt.e.preventDefault();
     opt.e.stopPropagation();
-  });
-      
+
+    var vpt = this.viewportTransform;
+    if (zoom < 400 / 1000) {
+      vpt[4] = 200 - 600 * zoom / 2;
+      vpt[5] = 200 - 600 * zoom / 2;
+    } else {
+      if (vpt[4] >= 0) {
+        vpt[4] = 0;
+      } else if (vpt[4] < canvas.getWidth() - 600 * zoom) {
+        vpt[4] = canvas.getWidth() - 600 * zoom;
+      }
+      if (vpt[5] >= 0) {
+        vpt[5] = 0;
+      } else if (vpt[5] < canvas.getHeight() - 600 * zoom) {
+        vpt[5] = canvas.getHeight() - 600 * zoom;
+      }
+    }
+});
         
